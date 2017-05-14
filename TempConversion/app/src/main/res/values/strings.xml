@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">TempConversion</string>
+    <string name="instructionLabel">Convert:</string>
+    <string name="fromLabel">From</string>
+    <string name="toLabel">To</string>
 </resources>

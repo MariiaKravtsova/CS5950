@@ -1,18 +1,125 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="edu.wmich.cs.tempconversion.tempActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
+        android:text="@string/instructionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="30sp"
+        android:paddingTop="20dp"/>
 
-</android.support.constraint.ConstraintLayout>
+    <EditText
+        android:id="@+id/input"
+        android:layout_width="191dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="50dp">
+
+        <RadioGroup
+            android:id="@+id/fromGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:paddingRight="25dp">
+
+            <TextView
+                android:text="@string/fromLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/fromC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Celcius" />
+            <RadioButton
+                android:id="@+id/fromF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fahrenhiet" />
+            <RadioButton
+                android:id="@+id/fromK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kelvin" />
+            <RadioButton
+                android:id="@+id/fromR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rankine" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/toGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:paddingLeft="25dp">
+
+            <TextView
+                android:text="@string/toLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
+
+            <RadioButton
+                android:id="@+id/toC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Celcius" />
+            <RadioButton
+                android:id="@+id/toF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fahrenhiet" />
+            <RadioButton
+                android:id="@+id/toK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kelvin" />
+            <RadioButton
+                android:id="@+id/toR"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rankine" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/convertButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="add"
+        android:text="Convert"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:gravity="center"/>
+
+    </LinearLayout>
+
+</LinearLayout>
