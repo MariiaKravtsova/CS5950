@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Calculator</string>
+    <string name="addition_toggle">Add</string>
+    <string name="subtract_toggle">Subtract</string>
+    <string name="multiplication_toggle">Multiply</string>
+    <string name="division_toggle">Divide</string>
+
+    <string name="input_a">Input a: </string>
+    <string name="input_b">Input b: </string>
+    <string name="output">Output: </string>
+</resources>
