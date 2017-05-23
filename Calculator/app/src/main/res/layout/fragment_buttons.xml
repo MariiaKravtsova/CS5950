@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="vertical"
     >
 
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button_group"
-        >
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_group"
+            >
 
-        <RadioButton
-            android:id="@+id/addition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/addition_toggle" />
-        <RadioButton
-            android:id="@+id/subtraction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/subtract_toggle" />
-        <RadioButton
-            android:id="@+id/multiplication"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/multiplication_toggle" />
-        <RadioButton
-            android:id="@+id/division"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/division_toggle" />
-    </RadioGroup>
+                <RadioButton
+                    android:id="@+id/addition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/addition_toggle" />
+                <RadioButton
+                    android:id="@+id/subtraction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subtract_toggle" />
+                <RadioButton
+                    android:id="@+id/multiplication"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/multiplication_toggle" />
+                <RadioButton
+                    android:id="@+id/division"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/division_toggle" />
+        </RadioGroup>
 
 </LinearLayout>

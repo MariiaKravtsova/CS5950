@@ -9,8 +9,14 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 
 public class ButtonsFragment extends Fragment {
+
+    private static final String KEY_A = "a";
+    private static final String KEY_S = "s";
+    private static final String KEY_M = "m";
+    private static final String KEY_D = "d";
 
     private RadioButton mAdditionButton;
     private RadioButton mSubtractButton;
@@ -35,35 +41,25 @@ public class ButtonsFragment extends Fragment {
         mDivisionButton = (RadioButton) v.findViewById(R.id.division);
         mMultiplicationButton = (RadioButton) v.findViewById(R.id.multiplication);
 
-        mButtonGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                switch (checkedId) {
-                    case R.id.addition:
-                        operation(mNumber.x, mNumber.y);
-                        break;
-                    case R.id.subtraction:
-                        operation(mNumber.x, mNumber.y);
-                        break;
-                    case R.id.multiplication:
-                        multiplication = true;
-                        operation(mNumber.x, mNumber.y);
-                        break;
-                    case R.id.division:
-                        division = true;
-                        operation(mNumber.x, mNumber.y);
-                        break;
-                }
-            }
-        });
+        if (savedInstanceState != null) {
+            addition = savedInstanceState.getBoolean(KEY_A);
+            subtraction = savedInstanceState.getBoolean(KEY_S);
+            multiplication = savedInstanceState.getBoolean(KEY_M);
+            division = savedInstanceState.getBoolean(KEY_D);
+        }
 
         return v;
     }
 
+
+
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-
+        savedInstanceState.putBoolean(KEY_A, addition);
+        savedInstanceState.putBoolean(KEY_S, subtraction);
+        savedInstanceState.putBoolean(KEY_M, multiplication);
+        savedInstanceState.putBoolean(KEY_D, division);
     }
 
     public int operation(int x, int y) {
@@ -76,10 +72,10 @@ public class ButtonsFragment extends Fragment {
         else if (mSubtractButton.isChecked()) {
             mNumber.z = x - y;
         }
-        else if (multiplication) {
+        else if (mMultiplicationButton.isChecked()) {
             mNumber.z = x * y;
         }
-        else if (division) {
+        else if (mDivisionButton.isChecked()) {
             mNumber.z = x / y;
         }
 
