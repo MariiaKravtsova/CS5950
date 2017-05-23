@@ -6,10 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 
 public class ButtonsFragment extends Fragment {
 
@@ -48,10 +46,16 @@ public class ButtonsFragment extends Fragment {
             division = savedInstanceState.getBoolean(KEY_D);
         }
 
+        mButtonGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                InputFragment frag = (InputFragment) getFragmentManager().findFragmentById(R.id.fragment_input);
+                frag.textEntered();
+            }
+        });
+
         return v;
     }
-
-
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);

@@ -1,3 +1,10 @@
+/*
+ * CS 5950: Homework 2
+ * date: May 22, 2017
+ * author: Mariia Kravtsova
+ * Referenced: https://developer.android.com/reference/android/app/Fragment.html
+ */
+
 package edu.wmich.cs.calculator;
 
 import android.content.Context;
