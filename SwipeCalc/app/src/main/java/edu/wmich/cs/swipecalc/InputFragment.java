@@ -2,7 +2,6 @@ package edu.wmich.cs.swipecalc;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +40,28 @@ public class InputFragment extends Fragment {
         z = (TextView) v.findViewById(R.id.output);
         mButton = (Button) v.findViewById(R.id.calculate_button);
 
+        mButton.setText(mData[mOperation]);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                z.setText(Integer.toString(mOperation));
+                double r = 0;
+                switch (mOperation) {
+                    case 0:
+                        r = Double.parseDouble(x.getText().toString()) + Double.parseDouble(y.getText().toString());
+                        break;
+                    case 1:
+                        r = Double.parseDouble(x.getText().toString()) - Double.parseDouble(y.getText().toString());
+                        break;
+                    case 2:
+                        r = Double.parseDouble(x.getText().toString()) * Double.parseDouble(y.getText().toString());
+                        break;
+                    case 3:
+                        r = Double.parseDouble(x.getText().toString()) / Double.parseDouble(y.getText().toString());
+                        break;
+                    default:
+                        break;
+                }
+                z.setText(Double.toString(r));
             }
         });
 

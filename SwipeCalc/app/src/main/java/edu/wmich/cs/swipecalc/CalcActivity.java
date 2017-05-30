@@ -1,3 +1,9 @@
+/*
+ * CS 5650: Homework 3
+ * date: May 29, 2017
+ * author: Mariia Kravtsova
+ */
+
 package edu.wmich.cs.swipecalc;
 
 import android.content.Intent;
@@ -45,6 +51,7 @@ public class CalcActivity extends AppCompatActivity {
             mButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Intent intent = MathActivity.newIntent(CalcActivity.this);
+                    operationId = java.util.Arrays.asList(mData).indexOf(mData);
                     intent.putExtra("button", operationId);
                     startActivity(intent);
                 }
