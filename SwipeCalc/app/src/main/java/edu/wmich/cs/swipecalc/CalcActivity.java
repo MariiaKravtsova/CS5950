@@ -1,10 +1,12 @@
 package edu.wmich.cs.swipecalc;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
@@ -14,6 +16,7 @@ public class CalcActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
     private String[] mData = {"+", "-", "*", "/"};
+    private int operationId;
 
 
     @Override
@@ -38,11 +41,20 @@ public class CalcActivity extends AppCompatActivity {
             super(inflater.inflate(R.layout.button, parent, false));
 
             mButton = (Button) itemView.findViewById(R.id.button_a);
+
+            mButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent intent = MathActivity.newIntent(CalcActivity.this);
+                    intent.putExtra("button", operationId);
+                    startActivity(intent);
+                }
+            });
         }
 
         public void bind(String item) {
             mButton.setText(item);
         }
+
     }
 
     private class CalcAdapter extends RecyclerView.Adapter<CalcHolder> {
@@ -60,6 +72,7 @@ public class CalcActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(CalcHolder holder, int position) {
+            operationId = position;
             String item = mData[position];
             holder.bind(item);
         }
