@@ -1,3 +1,17 @@
+/*
+ * CS 5950: Midterm
+ * date: June 6, 2017
+ * author: Mariia Kravtsova
+ * The project is not finished, however it has:
+ * store stock and users in SQLite
+ * user registration and forgot password by email
+ * user must be authenticated and sees their own stocks, test has pre-made stocks
+ * The stocks are in a recyclerview, and their total value is in the textview below it.
+ * User can add new stocks but has to re-sign in to see them, and the price is set to 100 until HTTP
+ *  request get implemented.
+ */
+
+
 package edu.wmich.cs.stock;
 
 import android.content.Context;
@@ -57,10 +71,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void verify() {
-        if (mUserBaseHelper.checkUser(mName.getText().toString().trim(),
-                mPassword.getText().toString().trim())) {
+        String name = mName.getText().toString().trim();
+        String pswd = mPassword.getText().toString().trim();
+
+        if (mUserBaseHelper.checkUser(name, pswd)) {
+
+            int uuid = mUserBaseHelper.getUser(name, pswd);
 
             Intent iStocks = new Intent(getApplicationContext(), StockActivity.class);
+            iStocks.putExtra("uuid", uuid);
             startActivity(iStocks);
         } else {
             Toast toast = Toast.makeText(getApplicationContext(), "Wrong username or password.", Toast.LENGTH_SHORT);

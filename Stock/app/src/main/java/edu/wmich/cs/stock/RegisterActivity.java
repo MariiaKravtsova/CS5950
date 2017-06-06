@@ -46,6 +46,10 @@ public class RegisterActivity extends AppCompatActivity {
 
                     mUserBaseHelper.addUser(user);
 
+                    mName.setText("");
+                    mEmail.setText("");
+                    mPassword.setText("");
+
                     Toast toast = Toast.makeText(getApplicationContext(), "User Created.", Toast.LENGTH_SHORT);
                     toast.show();
 

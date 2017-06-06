@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import edu.wmich.cs.stock.UserDbSchema.UserTable;
+import edu.wmich.cs.stock.UserDbSchema.StockTable;
 
 public class UserBaseHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
@@ -20,11 +21,18 @@ public class UserBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + UserTable.NAME + "(" +
-            " _id integer primary key autoincrement, " +
-            UserTable.Cols.UUID + ", " +
-            UserTable.Cols.username + ", " +
-            UserTable.Cols.password + ", " +
-            UserTable.Cols.email + ")"
+            UserTable.Cols.UUID + " integer primary key autoincrement, " +
+            UserTable.Cols.username + " text, " +
+            UserTable.Cols.password + " text, " +
+            UserTable.Cols.email + " text)"
+        );
+
+        db.execSQL("create table " + StockTable.NAME + "(" +
+                StockTable.Cols.UUID + " integer primary key autoincrement, " +
+                StockTable.Cols.userid + " integer, " +
+                StockTable.Cols.stock + " text, " +
+                StockTable.Cols.quantity + " integer, " +
+                StockTable.Cols.price + " real)"
         );
 
     }
@@ -54,6 +62,29 @@ public class UserBaseHelper extends SQLiteOpenHelper {
         } else {
             return false;
         }
+    }
+
+    public int getUser(String name, String password) {
+        String[] columns = {UserTable.Cols.UUID};
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selection = UserTable.Cols.username + " = ? " + " AND " + UserTable.Cols.password + " = ?";
+
+        String[] selectionArgs = {name, password};
+
+        Cursor cursor = db.query(UserTable.NAME, null, selection, selectionArgs, null, null, null);
+
+        if (cursor.getCount() < 1) {
+            cursor.close();
+
+        }
+
+        cursor.moveToFirst();
+        int uid = cursor.getInt(cursor.getColumnIndex("uuid"));
+        cursor.close();
+        db.close();
+        return uid;
     }
 
     public String checkEmail(String email) {
@@ -92,6 +123,21 @@ public class UserBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void addStock(Stock stock) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(StockTable.Cols.userid, stock.getUserId());
+        values.put(StockTable.Cols.stock, stock.getStock());
+        values.put(StockTable.Cols.price, stock.getPrice());
+        values.put(StockTable.Cols.quantity, stock.getQuantity());
+
+        db.insert(StockTable.NAME, null, values);
+        db.close();
+    }
+
+
     protected void createTest() {
         User testUser = new User();
 
@@ -100,7 +146,33 @@ public class UserBaseHelper extends SQLiteOpenHelper {
         testUser.setPassword("test");
 
         addUser(testUser);
+    }
 
+    public void addStocks() {
+        // These are some stock examples since I didn't fetch them from the internet
+        Stock google = new Stock();
+        google.setStock("GOOGL");
+        google.setUserId(1);
+        google.setPrice(1000.00);
+        google.setQuantity(3);
+
+        addStock(google);
+
+        Stock fbook = new Stock();
+        fbook.setStock("FB");
+        fbook.setUserId(1);
+        fbook.setPrice(150.00);
+        fbook.setQuantity(9);
+
+        addStock(fbook);
+
+        Stock micro = new Stock();
+        micro.setStock("MSFT");
+        micro.setUserId(1);
+        micro.setPrice(70.00);
+        micro.setQuantity(7);
+
+        addStock(micro);
     }
 }
 
