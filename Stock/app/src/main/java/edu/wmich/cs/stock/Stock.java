@@ -1,6 +1,8 @@
 package edu.wmich.cs.stock;
 
-public class Stock {
+import java.io.Serializable;
+
+public class Stock implements Serializable {
     private int mUserId;
     private String mStock;
     private double mPrice;

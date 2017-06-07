@@ -7,8 +7,8 @@
  * user registration and forgot password by email
  * user must be authenticated and sees their own stocks, test has pre-made stocks
  * The stocks are in a recyclerview, and their total value is in the textview below it.
- * User can add new stocks but has to re-sign in to see them, and the price is set to 100 until HTTP
- *  request get implemented.
+ * User can add new stocks with a set price.
+ * User can delete a stock on a swipe left or right
  */
 
 

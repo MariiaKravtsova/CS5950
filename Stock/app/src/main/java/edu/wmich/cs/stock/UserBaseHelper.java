@@ -137,6 +137,15 @@ public class UserBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void removeStock(String name, int uuid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(UserDbSchema.StockTable.NAME, UserDbSchema.StockTable.Cols.stock + " = ? and "
+                + UserDbSchema.StockTable.Cols.userid + " = " + uuid, new String[]{name});
+
+        db.close();
+    }
+
 
     protected void createTest() {
         User testUser = new User();

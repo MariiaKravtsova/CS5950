@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class AddActivity extends AppCompatActivity {
@@ -45,10 +46,18 @@ public class AddActivity extends AppCompatActivity {
 
                 mUserBaseHelper.addStock(stock);
 
-                Toast toast = Toast.makeText(getApplicationContext(), "Stock Added, re-login to see it.", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(), "Stock Added.", Toast.LENGTH_SHORT);
                 toast.show();
 
+                Intent i = new Intent();
+                i.putExtra("stock", stock);
+                if(getParent() == null) {
+                    setResult(RESULT_OK, i);
+                } else {
+                    getParent().setResult(RESULT_OK, i);
+                }
 
+                finish();
             }
         });
 

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,7 +40,7 @@ public class StockActivity extends AppCompatActivity {
             case R.id.new_stock:
                 Intent iAdd = new Intent(getApplicationContext(), AddActivity.class);
                 iAdd.putExtra("uuid", mUUID);
-                startActivity(iAdd);
+                startActivityForResult(iAdd, 1);
                 break;
             case R.id.refresh:
                 Toast toast = Toast.makeText(getApplicationContext(), "Coming soon.", Toast.LENGTH_SHORT);
@@ -55,14 +56,13 @@ public class StockActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock);
+        mStocks = new ArrayList<Stock>();
 
         mdb = new UserBaseHelper(getApplicationContext()).getWritableDatabase();
         mUserBaseHelper = new UserBaseHelper(StockActivity.this);
 
         Intent intent = getIntent();
         mUUID = intent.getIntExtra("uuid", 1);
-
-        mStocks = new ArrayList<Stock>();
 
         mUserBaseHelper.addStocks();
         populateStocks();
@@ -72,7 +72,44 @@ public class StockActivity extends AppCompatActivity {
         StockAdapter adapter = new StockAdapter();
         mRecyclerView.setAdapter(adapter);
 
+        ItemTouchHelper.SimpleCallback mIth = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;// true if moved, false otherwise
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int pos = viewHolder.getAdapterPosition();
+                String stockName = mStocks.get(pos).getStock();
+                mStocks.remove(pos);
+                mUserBaseHelper.removeStock(stockName, mUUID);
+
+                mRecyclerView.getAdapter().notifyDataSetChanged();
+                setTotal();
+
+            }
+
+        };
+
+        ItemTouchHelper mTouchHelper = new ItemTouchHelper(mIth);
+        mTouchHelper.attachToRecyclerView(mRecyclerView);
+
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 1 && resultCode == RESULT_OK && data != null)
+        {
+            Stock stock = (Stock) data.getSerializableExtra("stock");
+            mStocks.add(stock);
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+            setTotal();
+        }
+
+    }
+
 
     public void populateStocks() {
 
