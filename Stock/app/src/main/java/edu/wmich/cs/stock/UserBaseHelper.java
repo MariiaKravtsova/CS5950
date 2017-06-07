@@ -35,6 +35,7 @@ public class UserBaseHelper extends SQLiteOpenHelper {
                 StockTable.Cols.price + " real)"
         );
 
+        addStocks(db);
     }
 
     @Override
@@ -163,9 +164,8 @@ public class UserBaseHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(StockTable.NAME,
                 null,
-                StockTable.Cols.stock + " = " + stock.getStock(),
-                new String[] {stock.getStock()},
-                null, null, null);
+                StockTable.Cols.stock + " = ?",
+                new String[] {stock.getStock()}, null, null, null);
         cursor.moveToFirst();
         Double price = cursor.getDouble(cursor.getColumnIndex(StockTable.Cols.price));
         cursor.close();
@@ -183,31 +183,30 @@ public class UserBaseHelper extends SQLiteOpenHelper {
         addUser(testUser);
     }
 
-    public void addStocks() {
-        // These are some stock examples since I didn't fetch them from the internet
-        Stock google = new Stock();
-        google.setStock("GOOGL");
-        google.setUserId(1);
-        google.setPrice(1000.00);
-        google.setQuantity(3);
+    public void addStocks(SQLiteDatabase db) {
+        // These are some stock examples for test
 
-        addStock(google);
+        ContentValues google = new ContentValues();
+        google.put(StockTable.Cols.stock, "GOOG");
+        google.put(StockTable.Cols.quantity, 5);
+        google.put(StockTable.Cols.price, 100.00);
+        google.put(StockTable.Cols.userid, 1);
+        db.insert(StockTable.NAME, null, google);
 
-        Stock fbook = new Stock();
-        fbook.setStock("FB");
-        fbook.setUserId(1);
-        fbook.setPrice(150.00);
-        fbook.setQuantity(9);
+        ContentValues fbook = new ContentValues();
+        fbook.put(StockTable.Cols.stock, "FB");
+        fbook.put(StockTable.Cols.quantity, 3);
+        fbook.put(StockTable.Cols.price, 60.00);
+        fbook.put(StockTable.Cols.userid, 1);
+        db.insert(StockTable.NAME, null, fbook);
 
-        addStock(fbook);
+        ContentValues micro = new ContentValues();
+        micro.put(StockTable.Cols.stock, "MSFT");
+        micro.put(StockTable.Cols.quantity, 9);
+        micro.put(StockTable.Cols.price, 70.00);
+        micro.put(StockTable.Cols.userid, 1);
+        db.insert(StockTable.NAME, null, micro);
 
-        Stock micro = new Stock();
-        micro.setStock("MSFT");
-        micro.setUserId(1);
-        micro.setPrice(70.00);
-        micro.setQuantity(7);
-
-        addStock(micro);
     }
 }
 

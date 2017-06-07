@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class StockActivity extends AppCompatActivity {
@@ -45,7 +47,7 @@ public class StockActivity extends AppCompatActivity {
                 break;
             case R.id.refresh:
                 new FetchStocksTask().execute();
-                Toast toast = Toast.makeText(getApplicationContext(), "Coming soon.", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(), "Prices updated.", Toast.LENGTH_SHORT);
                 toast.show();
                 break;
             default:
@@ -66,7 +68,6 @@ public class StockActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mUUID = intent.getIntExtra("uuid", 1);
 
-        mUserBaseHelper.addStocks();
         populateStocks();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.stock_list);
@@ -163,13 +164,14 @@ public class StockActivity extends AppCompatActivity {
     }
 
     private void setTotal() {
+        NumberFormat formatter = new DecimalFormat("#0.00");
         double total = 0;
         for (Stock stock: mStocks) {
             total += stock.getValue();
         }
 
         mTotal = (TextView) findViewById(R.id.total);
-        String text = "Total: " + String.valueOf(total);
+        String text = "Total: " + String.valueOf(formatter.format(total));
         mTotal.setText(text);
     }
 

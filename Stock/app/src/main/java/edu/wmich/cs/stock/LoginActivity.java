@@ -8,7 +8,8 @@
  * user must be authenticated and sees their own stocks, test has pre-made stocks
  * The stocks are in a recyclerview, and their total value is in the textview below it.
  * User can add new stocks with a set price.
- * User can delete a stock on a swipe left or right
+ * User can delete a stock on a swipe left or right.
+ * The prices can be refreshed, that fetches prices from Yahoo API
  */
 
 
