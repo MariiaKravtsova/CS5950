@@ -3,6 +3,7 @@ package edu.wmich.cs.stock;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +44,7 @@ public class StockActivity extends AppCompatActivity {
                 startActivityForResult(iAdd, 1);
                 break;
             case R.id.refresh:
+                new FetchStocksTask().execute();
                 Toast toast = Toast.makeText(getApplicationContext(), "Coming soon.", Toast.LENGTH_SHORT);
                 toast.show();
                 break;
@@ -106,6 +108,7 @@ public class StockActivity extends AppCompatActivity {
             mStocks.add(stock);
             mRecyclerView.getAdapter().notifyDataSetChanged();
             setTotal();
+            new FetchStocksTask().execute();
         }
 
     }
@@ -113,9 +116,7 @@ public class StockActivity extends AppCompatActivity {
 
     public void populateStocks() {
 
-        Cursor cursor = mdb.query(UserDbSchema.StockTable.NAME, null, UserDbSchema.StockTable.Cols.userid + " = " + mUUID,
-                null, null, null, null);
-
+        Cursor cursor = mdb.query(UserDbSchema.StockTable.NAME, null, UserDbSchema.StockTable.Cols.userid + " = " + mUUID, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
@@ -135,6 +136,30 @@ public class StockActivity extends AppCompatActivity {
         mdb.close();
 
         setTotal();
+    }
+
+    private class FetchStocksTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ArrayList<String> temp = new ArrayList<String>();
+            for (Stock stock: mStocks) {
+                temp.add(stock.getStock());
+            }
+
+            new StockFetcher().fetchItems(temp, getApplicationContext());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            for (Stock stock: mStocks) {
+                Double price = mUserBaseHelper.updatePrice(stock);
+                stock.setPrice(price);
+            }
+            setTotal();
+            mRecyclerView.getAdapter().notifyDataSetChanged();
+        }
     }
 
     private void setTotal() {

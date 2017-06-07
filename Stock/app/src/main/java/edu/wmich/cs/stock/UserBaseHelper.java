@@ -146,6 +146,32 @@ public class UserBaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updatePrice(double price, String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(StockTable.Cols.price, price);
+        db.update(StockTable.NAME, values, StockTable.Cols.stock + " = ?", new String[] {name});
+
+        db.insert(StockTable.NAME, null, values);
+        db.close();
+    }
+
+    public double updatePrice(Stock stock) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.query(StockTable.NAME,
+                null,
+                StockTable.Cols.stock + " = " + stock.getStock(),
+                new String[] {stock.getStock()},
+                null, null, null);
+        cursor.moveToFirst();
+        Double price = cursor.getDouble(cursor.getColumnIndex(StockTable.Cols.price));
+        cursor.close();
+        db.close();
+        return price;
+    }
 
     protected void createTest() {
         User testUser = new User();

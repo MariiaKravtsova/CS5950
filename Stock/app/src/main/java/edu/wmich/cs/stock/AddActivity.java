@@ -41,7 +41,7 @@ public class AddActivity extends AppCompatActivity {
 
                 stock.setUserId(mUUID);
                 stock.setQuantity(Integer.parseInt(mQuantity.getText().toString()));
-                stock.setPrice(100.00);
+                stock.setPrice(0);
                 stock.setStock(mName.getText().toString().trim());
 
                 mUserBaseHelper.addStock(stock);
