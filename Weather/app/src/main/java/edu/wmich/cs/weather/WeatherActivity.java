@@ -14,7 +14,7 @@ public class WeatherActivity extends AppCompatActivity {
     private EditText mZipCode;
     private Button mButton;
     private TextView mTempTextView;
-    private String mZipString;
+    private String temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +39,13 @@ public class WeatherActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
 
-
-            new WeatherFetcher().fetchItems(strings[0], getApplicationContext());
-            return null;
+            return new WeatherFetcher().fetchItems(strings[0], getApplicationContext());
         }
 
         @Override
         protected void onPostExecute(String result) {
-            mTempTextView.setText(result);
-
+            mTempTextView.setText("Temp of " + result + "\u00b0 Fahrenheit");
+            temp = result;
         }
     }
 }

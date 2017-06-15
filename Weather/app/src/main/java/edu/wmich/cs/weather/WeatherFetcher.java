@@ -1,6 +1,5 @@
 package edu.wmich.cs.weather;
 
-
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
@@ -14,8 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class WeatherFetcher {
 
@@ -48,35 +45,36 @@ public class WeatherFetcher {
         return new String(getUrlBytes(urlSpec));
     }
 
-    public void fetchItems(String zip, Context context) {
+    public String fetchItems(String zip, Context context) {
         try {
-            String url = Uri.parse("https://query.yahooapis.com/v1/yql")
+            String url = Uri.parse("https://query.yahooapis.com/v1/public/yql")
                     .buildUpon()
-                    .appendQueryParameter("q", "select * from weather.forecast where woeid in (select woeid from geo.places where text=\"" + "49009" + "\" limit 1)")
+                    .appendQueryParameter("q", "select * from weather.forecast where woeid in (select woeid from geo.places where text=\"" + zip + "\" limit 1)")
                     .appendQueryParameter("format", "json")
                     .appendQueryParameter("diagnostics", "true")
                     .appendQueryParameter("env", "store://datatables.org/alltableswithkeys")
-                    .appendQueryParameter("callback","")
+                    .appendQueryParameter("callback", "")
                     .build().toString();
             String jsonString = getUrlString(url);
             JSONObject jsonBody = new JSONObject(jsonString);
-            parseItems(jsonBody, context);
+            return parseItems(jsonBody, context);
         } catch (IOException e) {
             Log.e("WeatherFetcher", "fetchItemsIo: " + e.getMessage(), e);
-        }  catch (JSONException e) {
+        } catch (JSONException e) {
             Log.e("WeatherFetcher", "fetchItemsJSON: ", e);
         }
-
+        return null;
     }
 
-    public void parseItems(JSONObject json, Context context) throws IOException, JSONException {
+    public String parseItems(JSONObject json, Context context) throws IOException, JSONException {
 
         JSONObject query = json.getJSONObject("query");
         JSONObject results = query.getJSONObject("results");
-        JSONArray array = results.getJSONArray("condition");
-        Log.d("WeatherFetcher", results.toString());
-//            JSONObject obj = array.getJSONObject(array);
-//            String temp = obj.getString("temp");
+        JSONObject channel = results.getJSONObject("channel");
+        JSONObject item = channel.getJSONObject("item");
+        JSONObject condition = item.getJSONObject("condition");
+
+        return condition.getString("temp");
     }
 
 
