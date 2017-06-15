@@ -1,5 +1,7 @@
 package edu.wmich.cs.weather;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +18,10 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView mTempTextView;
     private String temp;
 
+    public static Intent newIntent(Context context) {
+        return new Intent(context, WeatherActivity.class);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,9 +35,22 @@ public class WeatherActivity extends AppCompatActivity {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FetchWeatherTask().execute(mZipCode.getText().toString());
+                QueryPreferences.setStoredQuery(getApplicationContext(), mZipCode.getText().toString());
+                new FetchWeatherTask().execute(QueryPreferences.getStoredQuery(getApplicationContext()));
             }
         });
+
+        Intent i = PollService.newIntent(getApplicationContext());
+        getApplicationContext().startService(i);
+        PollService.setServiceAlarm(getApplicationContext(), false);
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        QueryPreferences.getStoredQuery(getApplicationContext());
+        PollService.setServiceAlarm(getApplicationContext(), true);
     }
 
     private class FetchWeatherTask extends AsyncTask<String, Void, String> {
@@ -45,7 +64,6 @@ public class WeatherActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             mTempTextView.setText("Temp of " + result + "\u00b0 Fahrenheit");
-            temp = result;
         }
     }
 }
