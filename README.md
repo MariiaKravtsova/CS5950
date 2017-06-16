@@ -12,3 +12,5 @@ Assignmnets:
 * Temperature converter
 * Calculator with fragments
 * Calculator with ViewerPager and RecyclerView
+* Get temperature from YQL Api and set it to notifications
+* Get stock from YQL api, store stock and users in database and perform CRUD

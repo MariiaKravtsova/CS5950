@@ -1,3 +1,14 @@
+/*
+ * CS 5950: Homework 4
+ * date: June 15, 2017
+ * author: Mariia Kravtsova
+ * Allow users to enter a location ZIP code and retrieve the current temperature for that location. The application should display the current temperature on the application’s UI.
+ * Allow users to receive notifications with the current time and temperature through the notification drawer every 1 minute when the application is not running. Only one notification
+ * that conveys the latest retrieved details should be available through the notification drawer. When the user clicks on the notification, your application should be brought to the foreground.
+ * Allow users to receive notifications after a reboot of their devices.
+ * Stop generating notifications when the application is running in the foreground.
+ */
+
 package edu.wmich.cs.weather;
 
 import android.content.Context;
@@ -31,17 +42,21 @@ public class WeatherActivity extends AppCompatActivity {
         mTempTextView = (TextView) findViewById(R.id.temp_textview);
         mZipCode = (EditText) findViewById(R.id.zip_text);
 
+        if (QueryPreferences.getStoredQuery(getApplicationContext()) != null) {
+            mZipCode.setText(QueryPreferences.getStoredQuery(getApplicationContext()));
+            new FetchWeatherTask().execute(QueryPreferences.getStoredQuery(getApplicationContext()));
+        }
+
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 QueryPreferences.setStoredQuery(getApplicationContext(), mZipCode.getText().toString());
                 new FetchWeatherTask().execute(QueryPreferences.getStoredQuery(getApplicationContext()));
+
             }
         });
 
-        Intent i = PollService.newIntent(getApplicationContext());
-        getApplicationContext().startService(i);
         PollService.setServiceAlarm(getApplicationContext(), false);
 
     }
@@ -49,7 +64,6 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        QueryPreferences.getStoredQuery(getApplicationContext());
         PollService.setServiceAlarm(getApplicationContext(), true);
     }
 
